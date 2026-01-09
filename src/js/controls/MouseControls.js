@@ -27,50 +27,87 @@ export class MouseControls {
         this.renderer.domElement.addEventListener('drop', (e) => this.onDrop(e));
 
         // Contrôles tactiles pour mobile
-        let touchStartTime = 0;
-        let touchStartPosition = { x: 0, y: 0 };
-        let longPressTimer = null;
+        this.touchStartTime = 0;
+        this.touchStartPosition = { x: 0, y: 0 };
+        this.longPressTimer = null;
+        this.touchIdentifier = null; // Identifier du touch pour suivre le même doigt
 
         this.renderer.domElement.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) {
+            // Ne gérer que si un seul doigt et pas en mode zoom
+            if (e.touches.length === 1 && !this.cameraControls.isZoomingMode()) {
                 const touch = e.touches[0];
-                touchStartTime = Date.now();
-                touchStartPosition = { x: touch.clientX, y: touch.clientY };
+                this.touchIdentifier = touch.identifier;
+                this.touchStartTime = Date.now();
+                this.touchStartPosition = { x: touch.clientX, y: touch.clientY };
                 
                 // Timer pour le long press (suppression)
-                longPressTimer = setTimeout(() => {
-                    this.handleLongPress(touch);
+                this.longPressTimer = setTimeout(() => {
+                    // Vérifier que c'est toujours le même touch et qu'on n'est pas en zoom
+                    if (!this.cameraControls.isZoomingMode() && !this.cameraControls.getMouseMovedDuringDrag()) {
+                        this.handleLongPress(touch);
+                    }
                 }, 500);
+            } else {
+                // Annuler le timer si on passe en mode zoom ou plusieurs doigts
+                if (this.longPressTimer) {
+                    clearTimeout(this.longPressTimer);
+                    this.longPressTimer = null;
+                }
+            }
+        }, { passive: false });
+
+        this.renderer.domElement.addEventListener('touchmove', (e) => {
+            // Annuler le long press si on bouge ou si on passe en mode zoom
+            if (this.longPressTimer && (e.touches.length !== 1 || this.cameraControls.isZoomingMode())) {
+                clearTimeout(this.longPressTimer);
+                this.longPressTimer = null;
             }
         }, { passive: false });
 
         this.renderer.domElement.addEventListener('touchend', (e) => {
-            if (longPressTimer) {
-                clearTimeout(longPressTimer);
-                longPressTimer = null;
+            // Annuler le timer de long press
+            if (this.longPressTimer) {
+                clearTimeout(this.longPressTimer);
+                this.longPressTimer = null;
             }
 
-            if (e.changedTouches.length === 1) {
+            // Ne gérer que si c'est le même touch qui a commencé et qu'on n'est pas en zoom
+            if (e.changedTouches.length === 1 && !this.cameraControls.isZoomingMode()) {
                 const touch = e.changedTouches[0];
-                const touchDuration = Date.now() - touchStartTime;
-                const touchDistance = Math.hypot(
-                    touch.clientX - touchStartPosition.x,
-                    touch.clientY - touchStartPosition.y
-                );
+                
+                // Vérifier que c'est le même touch
+                if (touch.identifier === this.touchIdentifier) {
+                    const touchDuration = Date.now() - this.touchStartTime;
+                    const touchDistance = Math.hypot(
+                        touch.clientX - this.touchStartPosition.x,
+                        touch.clientY - this.touchStartPosition.y
+                    );
 
-                // Si c'est un tap court (< 300ms) et pas de mouvement significatif
-                if (touchDuration < 300 && touchDistance < 10) {
-                    // Ne pas placer si on a déplacé la caméra
-                    if (!this.cameraControls.getMouseMovedDuringDrag()) {
-                        this.handleTouchClick(touch);
+                    // Si c'est un tap court (< 300ms) et pas de mouvement significatif
+                    if (touchDuration < 300 && touchDistance < 10) {
+                        // Ne pas placer si on a déplacé la caméra
+                        if (!this.cameraControls.getMouseMovedDuringDrag()) {
+                            this.handleTouchClick(touch);
+                        }
+                        this.cameraControls.resetMouseMovedDuringDrag();
                     }
-                    this.cameraControls.resetMouseMovedDuringDrag();
                 }
+            }
+            
+            // Réinitialiser l'identifier si tous les doigts sont levés
+            if (e.touches.length === 0) {
+                this.touchIdentifier = null;
             }
         }, { passive: false });
     }
 
     handleTouchClick(touch) {
+        // Vérifier une dernière fois qu'on n'a pas bougé la caméra
+        if (this.cameraControls.getMouseMovedDuringDrag()) {
+            this.cameraControls.resetMouseMovedDuringDrag();
+            return;
+        }
+        
         const event = {
             clientX: touch.clientX,
             clientY: touch.clientY,

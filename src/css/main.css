@@ -19,6 +19,8 @@ body {
     color: var(--color-text);
     overflow-x: hidden;
     position: relative;
+    /* Permettre le scroll vertical mais pas horizontal sur mobile */
+    touch-action: pan-y;
 }
 
 body::before {

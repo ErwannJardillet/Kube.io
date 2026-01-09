@@ -14,6 +14,12 @@ export class CameraControls {
             orbitSensitivity: CONFIG.CONTROLS.ORBIT_SENSITIVITY,
             zoomSensitivity: CONFIG.CONTROLS.ZOOM_SENSITIVITY
         };
+        
+        // Variables pour les contrôles tactiles (déclarées comme propriétés de classe)
+        this.touchStartDistance = 0;
+        this.touchStartRadius = 0;
+        this.isTouching = false;
+        this.isZooming = false; // Indique si on est en mode zoom (2 doigts)
 
         this.init();
     }
@@ -92,44 +98,43 @@ export class CameraControls {
         });
 
         // Contrôles tactiles pour mobile
-        let touchStartDistance = 0;
-        let touchStartRadius = this.cameraSpherical.radius;
-        let lastTouchPosition = { x: 0, y: 0 };
-        let isTouching = false;
+        this.touchStartRadius = this.cameraSpherical.radius;
 
         this.renderer.domElement.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (e.touches.length === 1) {
                 // Un seul doigt : orbiter
-                isTouching = true;
+                this.isTouching = true;
+                this.isZooming = false;
                 this.isOrbiting = true;
                 this.mouseMovedDuringDrag = false;
                 const touch = e.touches[0];
-                lastTouchPosition = { x: touch.clientX, y: touch.clientY };
                 this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
             } else if (e.touches.length === 2) {
                 // Deux doigts : zoom (pincer)
-                isTouching = true;
+                this.isTouching = true;
+                this.isZooming = true;
                 this.isOrbiting = false;
                 const touch1 = e.touches[0];
                 const touch2 = e.touches[1];
-                touchStartDistance = Math.hypot(
+                this.touchStartDistance = Math.hypot(
                     touch2.clientX - touch1.clientX,
                     touch2.clientY - touch1.clientY
                 );
-                touchStartRadius = this.cameraSpherical.radius;
+                this.touchStartRadius = this.cameraSpherical.radius;
             }
-        });
+        }, { passive: false });
 
         this.renderer.domElement.addEventListener('touchmove', (e) => {
             e.preventDefault();
-            if (e.touches.length === 1 && isTouching) {
-                // Orbiter avec un doigt
+            if (e.touches.length === 1 && this.isTouching && !this.isZooming) {
+                // Orbiter avec un doigt (seulement si pas en mode zoom)
                 const touch = e.touches[0];
                 const deltaX = touch.clientX - this.previousMousePosition.x;
                 const deltaY = touch.clientY - this.previousMousePosition.y;
 
-                if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+                // Seuil plus élevé sur mobile pour éviter les faux positifs (5px au lieu de 2px)
+                if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
                     this.mouseMovedDuringDrag = true;
                 }
 
@@ -140,34 +145,56 @@ export class CameraControls {
                 }
 
                 this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
-            } else if (e.touches.length === 2 && isTouching) {
+            } else if (e.touches.length === 2) {
                 // Zoom avec deux doigts
+                // Si on passe de 1 à 2 doigts, initialiser les valeurs de zoom
+                if (!this.isZooming && this.isTouching) {
+                    const touch1 = e.touches[0];
+                    const touch2 = e.touches[1];
+                    this.touchStartDistance = Math.hypot(
+                        touch2.clientX - touch1.clientX,
+                        touch2.clientY - touch1.clientY
+                    );
+                    this.touchStartRadius = this.cameraSpherical.radius;
+                }
+                
+                this.isZooming = true;
+                this.isOrbiting = false;
                 const touch1 = e.touches[0];
                 const touch2 = e.touches[1];
                 const currentDistance = Math.hypot(
                     touch2.clientX - touch1.clientX,
                     touch2.clientY - touch1.clientY
                 );
-                const scale = touchStartDistance / currentDistance;
-                this.cameraSpherical.radius = touchStartRadius * scale;
-                this.cameraSpherical.radius = Math.max(
-                    CONFIG.CAMERA.MIN_RADIUS,
-                    Math.min(CONFIG.CAMERA.MAX_RADIUS, this.cameraSpherical.radius)
-                );
+                
+                // Éviter la division par zéro
+                if (this.touchStartDistance > 0 && currentDistance > 0) {
+                    const scale = this.touchStartDistance / currentDistance;
+                    this.cameraSpherical.radius = this.touchStartRadius * scale;
+                    this.cameraSpherical.radius = Math.max(
+                        CONFIG.CAMERA.MIN_RADIUS,
+                        Math.min(CONFIG.CAMERA.MAX_RADIUS, this.cameraSpherical.radius)
+                    );
+                }
             }
-        });
+        }, { passive: false });
 
         this.renderer.domElement.addEventListener('touchend', (e) => {
             e.preventDefault();
             if (e.touches.length === 0) {
-                isTouching = false;
+                // Tous les doigts levés
+                this.isTouching = false;
+                this.isZooming = false;
                 this.isOrbiting = false;
             } else if (e.touches.length === 1) {
                 // Revenir en mode orbite si on passe de 2 à 1 doigt
+                this.isZooming = false;
+                this.isOrbiting = true;
+                this.mouseMovedDuringDrag = false;
                 const touch = e.touches[0];
                 this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
             }
-        });
+        }, { passive: false });
     }
 
     update() {
@@ -191,6 +218,14 @@ export class CameraControls {
 
     getCameraSpherical() {
         return this.cameraSpherical;
+    }
+
+    isZoomingMode() {
+        return this.isZooming;
+    }
+
+    isTouchingMode() {
+        return this.isTouching;
     }
 }
 
