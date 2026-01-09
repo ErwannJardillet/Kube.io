@@ -122,7 +122,7 @@ export class MouseControls {
             clientY: touch.clientY,
             preventDefault: () => {}
         };
-        this.onCanvasRightClick(event);
+        this.onCanvasRightClick(event, true); // true = depuis mobile
     }
 
     updateMousePosition(event) {
@@ -185,7 +185,7 @@ export class MouseControls {
         }
     }
 
-    onCanvasRightClick(event) {
+    onCanvasRightClick(event, isMobile = false) {
         event.preventDefault();
 
         this.updateMousePosition(event);
@@ -197,6 +197,24 @@ export class MouseControls {
         if (intersects.length > 0) {
             const clickedBlock = intersects[0].object;
             this.blockManager.removeBlock(clickedBlock);
+            
+            // Vibrer sur mobile si un bloc a été supprimé
+            if (isMobile) {
+                this.vibrate();
+            }
+        }
+    }
+
+    vibrate() {
+        // Vérifier si l'API Vibration est disponible
+        if ('vibrate' in navigator) {
+            try {
+                // Vibration courte : 50ms
+                navigator.vibrate(50);
+            } catch (e) {
+                // Ignorer les erreurs si l'API n'est pas supportée
+                console.debug('Vibration non supportée');
+            }
         }
     }
 
