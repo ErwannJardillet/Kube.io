@@ -8,6 +8,10 @@
     backdrop-filter: blur(10px);
     overflow: hidden;
     position: relative;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #canvas-container canvas {
@@ -15,6 +19,7 @@
     width: 100%;
     height: 100%;
     touch-action: none;
+    margin: 0 auto;
 }
 
 @media (max-width: 768px) {

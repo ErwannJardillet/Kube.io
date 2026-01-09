@@ -28,8 +28,15 @@ export class SceneManager {
         );
         this.camera.lookAt(0, 0, 0);
 
-        // Création du renderer
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        // Création du renderer avec haute résolution pour éviter le pixelisé
+        this.renderer = new THREE.WebGLRenderer({ 
+            antialias: true,
+            powerPreference: "high-performance"
+        });
+        
+        // Utiliser devicePixelRatio pour améliorer la qualité sur écrans haute résolution
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2); // Limiter à 2 pour performance
+        this.renderer.setPixelRatio(pixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -48,6 +55,8 @@ export class SceneManager {
     onWindowResize() {
         this.camera.aspect = this.container.clientWidth / this.container.clientHeight;
         this.camera.updateProjectionMatrix();
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        this.renderer.setPixelRatio(pixelRatio);
         this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
     }
 

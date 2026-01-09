@@ -90,6 +90,84 @@ export class CameraControls {
                 Math.min(CONFIG.CAMERA.MAX_RADIUS, this.cameraSpherical.radius)
             );
         });
+
+        // Contrôles tactiles pour mobile
+        let touchStartDistance = 0;
+        let touchStartRadius = this.cameraSpherical.radius;
+        let lastTouchPosition = { x: 0, y: 0 };
+        let isTouching = false;
+
+        this.renderer.domElement.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (e.touches.length === 1) {
+                // Un seul doigt : orbiter
+                isTouching = true;
+                this.isOrbiting = true;
+                this.mouseMovedDuringDrag = false;
+                const touch = e.touches[0];
+                lastTouchPosition = { x: touch.clientX, y: touch.clientY };
+                this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            } else if (e.touches.length === 2) {
+                // Deux doigts : zoom (pincer)
+                isTouching = true;
+                this.isOrbiting = false;
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                touchStartDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                touchStartRadius = this.cameraSpherical.radius;
+            }
+        });
+
+        this.renderer.domElement.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (e.touches.length === 1 && isTouching) {
+                // Orbiter avec un doigt
+                const touch = e.touches[0];
+                const deltaX = touch.clientX - this.previousMousePosition.x;
+                const deltaY = touch.clientY - this.previousMousePosition.y;
+
+                if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+                    this.mouseMovedDuringDrag = true;
+                }
+
+                if (this.mouseMovedDuringDrag) {
+                    this.cameraSpherical.theta -= deltaX * this.settings.orbitSensitivity * 2; // Plus sensible sur mobile
+                    this.cameraSpherical.phi -= deltaY * this.settings.orbitSensitivity * 2;
+                    this.cameraSpherical.phi = Math.max(0.1, Math.min(Math.PI / 2.2, this.cameraSpherical.phi));
+                }
+
+                this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            } else if (e.touches.length === 2 && isTouching) {
+                // Zoom avec deux doigts
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = Math.hypot(
+                    touch2.clientX - touch1.clientX,
+                    touch2.clientY - touch1.clientY
+                );
+                const scale = touchStartDistance / currentDistance;
+                this.cameraSpherical.radius = touchStartRadius * scale;
+                this.cameraSpherical.radius = Math.max(
+                    CONFIG.CAMERA.MIN_RADIUS,
+                    Math.min(CONFIG.CAMERA.MAX_RADIUS, this.cameraSpherical.radius)
+                );
+            }
+        });
+
+        this.renderer.domElement.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (e.touches.length === 0) {
+                isTouching = false;
+                this.isOrbiting = false;
+            } else if (e.touches.length === 1) {
+                // Revenir en mode orbite si on passe de 2 à 1 doigt
+                const touch = e.touches[0];
+                this.previousMousePosition = { x: touch.clientX, y: touch.clientY };
+            }
+        });
     }
 
     update() {

@@ -25,12 +25,75 @@ export class MouseControls {
         // Drag & drop
         this.renderer.domElement.addEventListener('dragover', (e) => this.onDragOver(e));
         this.renderer.domElement.addEventListener('drop', (e) => this.onDrop(e));
+
+        // Contrôles tactiles pour mobile
+        let touchStartTime = 0;
+        let touchStartPosition = { x: 0, y: 0 };
+        let longPressTimer = null;
+
+        this.renderer.domElement.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                const touch = e.touches[0];
+                touchStartTime = Date.now();
+                touchStartPosition = { x: touch.clientX, y: touch.clientY };
+                
+                // Timer pour le long press (suppression)
+                longPressTimer = setTimeout(() => {
+                    this.handleLongPress(touch);
+                }, 500);
+            }
+        }, { passive: false });
+
+        this.renderer.domElement.addEventListener('touchend', (e) => {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+
+            if (e.changedTouches.length === 1) {
+                const touch = e.changedTouches[0];
+                const touchDuration = Date.now() - touchStartTime;
+                const touchDistance = Math.hypot(
+                    touch.clientX - touchStartPosition.x,
+                    touch.clientY - touchStartPosition.y
+                );
+
+                // Si c'est un tap court (< 300ms) et pas de mouvement significatif
+                if (touchDuration < 300 && touchDistance < 10) {
+                    // Ne pas placer si on a déplacé la caméra
+                    if (!this.cameraControls.getMouseMovedDuringDrag()) {
+                        this.handleTouchClick(touch);
+                    }
+                    this.cameraControls.resetMouseMovedDuringDrag();
+                }
+            }
+        }, { passive: false });
+    }
+
+    handleTouchClick(touch) {
+        const event = {
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+            preventDefault: () => {}
+        };
+        this.onCanvasClick(event);
+    }
+
+    handleLongPress(touch) {
+        const event = {
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+            preventDefault: () => {}
+        };
+        this.onCanvasRightClick(event);
     }
 
     updateMousePosition(event) {
         const rect = this.renderer.domElement.getBoundingClientRect();
-        this.mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-        this.mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+        const clientX = event.clientX || (event.touches && event.touches[0]?.clientX) || 0;
+        const clientY = event.clientY || (event.touches && event.touches[0]?.clientY) || 0;
+        this.mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+        this.mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     }
 
     onCanvasClick(event) {
