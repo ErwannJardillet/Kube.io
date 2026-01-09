@@ -1,0 +1,25 @@
+:root {
+    --color-bg-gradient-start: #0c1d29;
+    --color-bg-gradient-end: #2b6063;
+    --color-text: white;
+    --color-glass-bg: rgba(255, 255, 255, 0.1);
+    --color-glass-border: rgba(255, 255, 255, 0.3);
+    --color-button-danger: rgba(255, 77, 77, 0.3);
+    --color-button-danger-hover: rgba(255, 77, 77, 0.5);
+    
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+    
+    --border-radius-sm: 8px;
+    --border-radius-md: 10px;
+    
+    --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 0 20px rgba(255, 255, 255, 0.5);
+    
+    --transition-default: all 0.3s ease;
+}
+

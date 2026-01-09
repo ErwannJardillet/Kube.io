@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructeur 3D - Grille de Construction</title>
+    <link rel="stylesheet" href="src/css/main.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Constructeur 3D</h1>
+            <p class="subtitle">Construisez avec des blocs colorés sur une grille</p>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="palette-section">
+                    <h2>Palette de Blocs</h2>
+                    <div class="palette" id="palette">
+                        <div class="block-item" data-color="#ff6b6b" data-name="Rouge" draggable="true">
+                            <div class="block-preview" style="background-color: #ff6b6b;"></div>
+                            <span class="block-name">Rouge</span>
+                        </div>
+                        <div class="block-item" data-color="#4ecdc4" data-name="Bleu" draggable="true">
+                            <div class="block-preview" style="background-color: #4ecdc4;"></div>
+                            <span class="block-name">Bleu</span>
+                        </div>
+                        <div class="block-item" data-color="#45b7d1" data-name="Vert" draggable="true">
+                            <div class="block-preview" style="background-color: #45b7d1;"></div>
+                            <span class="block-name">Vert</span>
+                        </div>
+                        <div class="block-item" data-color="#f9ca24" data-name="Jaune" draggable="true">
+                            <div class="block-preview" style="background-color: #f9ca24;"></div>
+                            <span class="block-name">Jaune</span>
+                        </div>
+                        <div class="block-item" data-color="#6c5ce7" data-name="Violet" draggable="true">
+                            <div class="block-preview" style="background-color: #6c5ce7;"></div>
+                            <span class="block-name">Violet</span>
+                        </div>
+                        <div class="block-item" data-color="#ff7675" data-name="Orange" draggable="true">
+                            <div class="block-preview" style="background-color: #ff7675;"></div>
+                            <span class="block-name">Orange</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls-section">
+                    <h2>Contrôles</h2>
+                    <button id="clear-all-btn" class="clear-btn">Effacer Tout</button>
+                </div>
+            </div>
+
+            <div class="canvas-section">
+                <div id="canvas-container"></div>
+                <div class="instructions">
+                    <h3>Instructions</h3>
+                    <div class="instruction-grid">
+                        <div class="instruction-item">
+                            <strong>Souris :</strong>
+                            <ul>
+                                <li>Glisser pour orbiter</li>
+                                <li>Molette pour zoomer</li>
+                                <li>Clic gauche : Placer un bloc</li>
+                                <li>Clic droit : Supprimer un bloc</li>
+                            </ul>
+                        </div>
+                        <div class="instruction-item">
+                            <strong>Clavier :</strong>
+                            <ul>
+                                <li>WASD / Flèches : Déplacer</li>
+                                <li>Q/E : Monter/Descendre</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+        }
+    }
+    </script>
+    <script type="module" src="src/js/main.js"></script>
+</body>
+</html>
+

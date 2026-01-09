@@ -1,0 +1,25 @@
+{
+  "name": "constructeur-3d",
+  "version": "1.0.0",
+  "description": "Application de construction 3D avec blocs colorés sur une grille",
+  "type": "module",
+  "main": "src/js/main.js",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "three.js",
+    "3d",
+    "construction",
+    "blocks",
+    "webgl"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {}
+}
+
