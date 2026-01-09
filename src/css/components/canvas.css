@@ -1,6 +1,7 @@
 #canvas-container {
     width: 100%;
     height: 600px;
+    min-height: 300px;
     border-radius: var(--border-radius-md);
     box-shadow: var(--shadow-md);
     background: rgba(255, 255, 255, 0.05);
@@ -13,5 +14,20 @@
     display: block;
     width: 100%;
     height: 100%;
+    touch-action: none;
+}
+
+@media (max-width: 768px) {
+    #canvas-container {
+        height: 50vh;
+        min-height: 300px;
+    }
+}
+
+@media (orientation: landscape) and (max-width: 768px) {
+    #canvas-container {
+        height: 60vh;
+        min-height: 300px;
+    }
 }
 

@@ -16,6 +16,7 @@
     width: 100%;
     padding: 12px 24px;
     font-size: 16px;
+    min-height: 44px;
     background: var(--color-button-danger);
     border: 2px solid rgba(255, 77, 77, 0.5);
     border-radius: var(--border-radius-sm);
@@ -23,6 +24,7 @@
     cursor: pointer;
     transition: var(--transition-default);
     font-weight: 600;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .clear-btn:hover {
@@ -34,5 +36,22 @@
 
 .clear-btn:active {
     transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .controls-section {
+        padding: var(--spacing-md);
+    }
+
+    .controls-section h2 {
+        font-size: 1.1em;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .clear-btn {
+        padding: 14px 20px;
+        font-size: 18px;
+        min-height: 48px;
+    }
 }
 

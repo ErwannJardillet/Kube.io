@@ -56,3 +56,33 @@
     }
 }
 
+@media (max-width: 768px) {
+    .instructions {
+        padding: var(--spacing-md);
+    }
+
+    .instructions h3 {
+        font-size: 1.1em;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .instruction-item {
+        padding: var(--spacing-sm);
+    }
+
+    .instruction-item strong {
+        font-size: 1em;
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .instruction-item li {
+        padding: 4px 0;
+        padding-left: var(--spacing-md);
+        font-size: 0.9em;
+    }
+
+    .instruction-grid {
+        gap: var(--spacing-sm);
+    }
+}
+

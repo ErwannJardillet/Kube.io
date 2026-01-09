@@ -115,15 +115,49 @@ h1 {
 
 @media (max-width: 768px) {
     h1 {
-        font-size: 2em;
+        font-size: 1.8em;
     }
 
-    #canvas-container {
-        height: 400px;
+    .subtitle {
+        font-size: 0.95em;
+    }
+
+    header {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .main-content {
+        gap: var(--spacing-md);
     }
 
     .container {
         padding: var(--spacing-sm);
+    }
+
+    .left-panel {
+        gap: var(--spacing-md);
+    }
+
+    .canvas-section {
+        gap: var(--spacing-md);
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: block;
+    }
+}
+
+@media (min-width: 769px) {
+    .desktop-only {
+        display: block;
+    }
+
+    .mobile-only {
+        display: none;
     }
 }
 
