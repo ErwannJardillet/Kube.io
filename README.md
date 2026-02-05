@@ -4,7 +4,7 @@ Application web interactive de construction 3D avec des blocs colorés sur une g
 
 ## 🌐 Démo en ligne
 
-🎮 **[Essayer l'application en ligne](https://erwannjardillet.github.io/Constructeur3D/)**
+🎮 **[Essayer l'application en ligne]([https://erwannjardillet.github.io/Constructeur3D/](https://kube-io.vercel.app/))**
 
 ## 🚀 Fonctionnalités
 
