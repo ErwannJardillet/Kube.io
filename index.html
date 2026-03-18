@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <title>Kube.io - Constructeur 3D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="src/css/main.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Kube.io</h1>
-            <p class="subtitle">Votre plateforme de construction 3D</p>
+            <h1><span class="logo-text">Kube.io</span></h1>
+            <p class="subtitle"><span class="badge">BETA</span> Votre plateforme de construction 3D</p>
         </header>
 
         <div class="main-content">
@@ -19,36 +22,36 @@
                 <div class="palette-section">
                     <h2>Palette de Blocs</h2>
                     <div class="palette" id="palette">
-                        <div class="block-item" data-color="#ff6b6b" data-name="Rouge" draggable="true">
+                        <div class="block-item" data-color="#ff6b6b" data-name="Rouge" draggable="true" style="--glow-color: #ff6b6b">
                             <div class="block-preview" style="background-color: #ff6b6b;"></div>
                             <span class="block-name">Rouge</span>
                         </div>
-                        <div class="block-item" data-color="#4ecdc4" data-name="Bleu" draggable="true">
+                        <div class="block-item" data-color="#4ecdc4" data-name="Cyan" draggable="true" style="--glow-color: #4ecdc4">
                             <div class="block-preview" style="background-color: #4ecdc4;"></div>
-                            <span class="block-name">Bleu</span>
+                            <span class="block-name">Cyan</span>
                         </div>
-                        <div class="block-item" data-color="#22c55e" data-name="Vert" draggable="true">
+                        <div class="block-item" data-color="#22c55e" data-name="Vert" draggable="true" style="--glow-color: #22c55e">
                             <div class="block-preview" style="background-color: #22c55e;"></div>
                             <span class="block-name">Vert</span>
                         </div>
-                        <div class="block-item" data-color="#f9ca24" data-name="Jaune" draggable="true">
+                        <div class="block-item" data-color="#f9ca24" data-name="Jaune" draggable="true" style="--glow-color: #f9ca24">
                             <div class="block-preview" style="background-color: #f9ca24;"></div>
                             <span class="block-name">Jaune</span>
                         </div>
-                        <div class="block-item" data-color="#6c5ce7" data-name="Violet" draggable="true">
+                        <div class="block-item" data-color="#6c5ce7" data-name="Violet" draggable="true" style="--glow-color: #6c5ce7">
                             <div class="block-preview" style="background-color: #6c5ce7;"></div>
                             <span class="block-name">Violet</span>
                         </div>
-                        <div class="block-item" data-color="#f97316" data-name="Orange" draggable="true">
+                        <div class="block-item" data-color="#f97316" data-name="Orange" draggable="true" style="--glow-color: #f97316">
                             <div class="block-preview" style="background-color: #f97316;"></div>
                             <span class="block-name">Orange</span>
                         </div>
-                        <div class="block-item" data-color="#ffffff" data-name="Blanc" draggable="true">
-                            <div class="block-preview" style="background-color: #ffffff; border: 2px solid rgba(0, 0, 0, 0.2);"></div>
+                        <div class="block-item" data-color="#ffffff" data-name="Blanc" draggable="true" style="--glow-color: #c0d4e8">
+                            <div class="block-preview" style="background-color: #ffffff;"></div>
                             <span class="block-name">Blanc</span>
                         </div>
-                        <div class="block-item" data-color="#000000" data-name="Noir" draggable="true">
-                            <div class="block-preview" style="background-color: #000000;"></div>
+                        <div class="block-item" data-color="#000000" data-name="Noir" draggable="true" style="--glow-color: #334155">
+                            <div class="block-preview" style="background-color: #0d1117; border: 1px solid rgba(255,255,255,0.15);"></div>
                             <span class="block-name">Noir</span>
                         </div>
                     </div>
@@ -66,7 +69,7 @@
                     <h3>Instructions</h3>
                     <div class="instruction-grid">
                         <div class="instruction-item desktop-only">
-                            <strong>Souris :</strong>
+                            <strong>Souris</strong>
                             <ul>
                                 <li>Glisser pour orbiter</li>
                                 <li>Molette pour zoomer</li>
@@ -75,14 +78,14 @@
                             </ul>
                         </div>
                         <div class="instruction-item desktop-only">
-                            <strong>Clavier :</strong>
+                            <strong>Clavier</strong>
                             <ul>
                                 <li>WASD / Flèches : Déplacer</li>
                                 <li>Q/E : Monter/Descendre</li>
                             </ul>
                         </div>
                         <div class="instruction-item mobile-only">
-                            <strong>Tactile :</strong>
+                            <strong>Tactile</strong>
                             <ul>
                                 <li>Glisser un doigt : Orbiter</li>
                                 <li>Pincer/Écarter : Zoomer</li>
@@ -106,4 +109,3 @@
     <script type="module" src="src/js/main.js"></script>
 </body>
 </html>
-

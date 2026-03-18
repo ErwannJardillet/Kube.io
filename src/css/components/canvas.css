@@ -1,17 +1,53 @@
+/* ===== Canvas Hero Container ===== */
 #canvas-container {
     width: 100%;
     height: 600px;
     min-height: 300px;
     border-radius: var(--border-radius-md);
-    box-shadow: var(--shadow-md);
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    background: #030509;
+    border: 1px solid rgba(0, 212, 255, 0.18);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.6),
+        0 0 40px rgba(0, 212, 255, 0.10),
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 80px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     position: relative;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+#canvas-container:hover {
+    border-color: rgba(0, 212, 255, 0.30);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.6),
+        0 0 60px rgba(0, 212, 255, 0.16),
+        0 20px 60px rgba(0, 0, 0, 0.7),
+        inset 0 0 80px rgba(0, 0, 0, 0.3);
+}
+
+/* Corner accents */
+#canvas-container::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+    pointer-events: none;
+    z-index: 10;
+}
+
+#canvas-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.4), transparent);
+    pointer-events: none;
+    z-index: 10;
 }
 
 #canvas-container canvas {
@@ -22,6 +58,7 @@
     margin: 0 auto;
 }
 
+/* ===== Responsive ===== */
 @media (max-width: 768px) {
     #canvas-container {
         height: 50vh;
@@ -35,4 +72,3 @@
         min-height: 300px;
     }
 }
-

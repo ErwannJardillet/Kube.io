@@ -1,25 +1,47 @@
 :root {
-    --color-bg-gradient-start: #0c1d29;
-    --color-bg-gradient-end: #2b6063;
-    --color-text: white;
-    --color-glass-bg: rgba(255, 255, 255, 0.1);
-    --color-glass-border: rgba(255, 255, 255, 0.3);
-    --color-button-danger: rgba(255, 77, 77, 0.3);
-    --color-button-danger-hover: rgba(255, 77, 77, 0.5);
-    
+    /* === Couleurs de fond === */
+    --bg-base: #06090f;
+    --bg-surface-1: rgba(255, 255, 255, 0.04);
+    --bg-surface-2: rgba(255, 255, 255, 0.07);
+
+    /* === Accents === */
+    --accent-cyan: #00d4ff;
+    --accent-purple: #7c3aed;
+    --accent-gradient: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+
+    /* Legacy compat */
+    --color-glass-bg: rgba(255, 255, 255, 0.04);
+    --color-glass-border: rgba(255, 255, 255, 0.08);
+
+    /* === Texte === */
+    --color-text: #e8f0f8;
+    --color-text-muted: rgba(232, 240, 248, 0.55);
+
+    /* === Bordures === */
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-accent: rgba(0, 212, 255, 0.25);
+
+    /* === Boutons === */
+    --color-button-danger: rgba(255, 59, 59, 0.12);
+    --color-button-danger-hover: rgba(255, 59, 59, 0.28);
+
+    /* === Espacements === */
     --spacing-xs: 5px;
     --spacing-sm: 10px;
     --spacing-md: 15px;
     --spacing-lg: 20px;
     --spacing-xl: 30px;
-    
-    --border-radius-sm: 8px;
-    --border-radius-md: 10px;
-    
-    --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 0 20px rgba(255, 255, 255, 0.5);
-    
-    --transition-default: all 0.3s ease;
-}
 
+    /* === Rayons === */
+    --border-radius-sm: 10px;
+    --border-radius-md: 14px;
+
+    /* === Ombres === */
+    --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.55);
+    --shadow-glow: 0 0 30px rgba(0, 212, 255, 0.15);
+    --shadow-lg: 0 0 20px rgba(255, 255, 255, 0.5);
+
+    /* === Transitions === */
+    --transition-default: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
